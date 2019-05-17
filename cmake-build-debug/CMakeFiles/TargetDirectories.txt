@@ -1,0 +1,3 @@
+/Users/april/Downloads/Optimize_index/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/april/Downloads/Optimize_index/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/april/Downloads/Optimize_index/cmake-build-debug/CMakeFiles/PCSTStaticV1.dir
