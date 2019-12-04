@@ -20,7 +20,18 @@ using std:: ofstream;
 using std:: endl;
 using std:: cout;
 
-//Try to implement pcst_fast from pcst_fast_pybind.cc
+/*This piece of code is heavily modified from
+https://github.com/fraenkel-lab/pcst_fast
+We owe special thanks to the authors who make the above code available
+Please also consider citing authors' work as related work
+A Fast, Adaptive Variant of the Goemans-Williamson Scheme for the Prize-Collecting Steiner Tree Problem
+Chinmay Hegde, Piotr Indyk, Ludwig Schmidt Workshop of the 11th DIMACS Implementation Challenge: Steiner Tree Problems, 2014
+*/
+
+
+
+
+
 void output (const char*p){
     std::cout<< *p;
 }
@@ -66,55 +77,11 @@ int main(int argc, char **argv) {
     std::vector<int> result_nodes;
     std::vector<int> result_edges;
 
-
-
-
-    /*
-    std:: string file = "/Users/April/Downloads/sampleGraph/sampleGraphSmall.txt";
-    std:: string attributeFile = "/Users/April/Downloads/sampleGraph/UserProfileExample.txt";
-    std:: string idMapFilePath = "/Users/April/Downloads/uidlistExample.txt";
-    std:: string penaltyFilePath = "/Users/April/Downloads/sampleGraph/penaltySmall.txt";
-    int attribute_index_number = 2;
-    */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    std:: string file = "/Users/April/Downloads/sampleGraph/graph_4000_e62500.txt";
-    std:: string attributeFile = "/Users/April/Downloads/sampleGraph/graph_4000_e62500-magfitf-8attr";
-    std:: string penaltyFilePath = "/Users/April/Downloads/sampleGraph/_4_250nodes.penalties-attr8-e62500.txt";
-    std:: string idMapFilePath = "/Users/April/Downloads/sampleGraph/_4_250nodes.penalties-attr8-e62500.txt";
+    std:: string file = "../sampleGraph/graph_v4000_e62500.txt";
+    std:: string attributeFile = "../sampleGraph/graph_v4000_e62500-8attr";
+    std:: string penaltyFilePath = "../sampleGraph/graph.penalties_v4000_I250nodes_attr8_e62500.txt";
+    std:: string idMapFilePath = "../sampleGraph/graph.penalties_v4000_I250nodes_attr8_e62500.txt";
     int attribute_index_number_main = 8;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /*
@@ -124,15 +91,6 @@ int main(int argc, char **argv) {
     std:: string penaltyFilePath(argv[4]);
     int attribute_index_number_main= atoi(argv[5]);
     */
-
-
-
-
-
-
-
-
-
 
 
     cluster_approx::Graph *graph = new cluster_approx::Graph(file,attributeFile,idMapFilePath,penaltyFilePath);
@@ -162,7 +120,7 @@ int main(int argc, char **argv) {
     PCSTFast *PCSTFastInstance = new PCSTFast(edges, prizes, terminals, -1, 1, cluster_approx::PCSTFast::PruningMethod::kStrongPruning, 0,output,
             edgeAttributeMap, nodeAttrMap,attribute_stat
     );
-    //printf("test \n");
+
     bool a = (*PCSTFastInstance).run(&result_nodes, &result_edges, attribute_index_number_main);
     endTime = clock();
 
@@ -170,10 +128,7 @@ int main(int argc, char **argv) {
     printf("the edge_computation_count is %d \n", edge_computation_count);
 
     PCSTFast::Statistics b =(*PCSTFastInstance).get_statistics();
-/*
-    int active_edge_growth_events_count =b.num_cluster_events;
-    std::cout << active_edge_growth_events_count;
-*/
+
     long long eventsNumber = b.total_num_edge_events;
 
 

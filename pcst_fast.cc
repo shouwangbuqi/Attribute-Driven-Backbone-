@@ -197,22 +197,6 @@ PCSTFast::PCSTFast(const std::vector<std::pair<std::pair<long, long>, long> >& e
         uu_part.next_event_val = event_time; //uu_part.next_event_val = event_time
         vv_part.next_event_val = event_time;
 
-        /*
-        if (uu_cluster.active && vv_cluster.active) {  //If uu_cluster and vv_cluster both active
-            double event_time = cost / 2.0;   //event_time equals cost/2
-            uu_part.next_event_val = event_time; //uu_part.next_event_val = event_time
-            vv_part.next_event_val = event_time;
-        } else if (uu_cluster.active) {
-            uu_part.next_event_val = cost;
-            vv_part.next_event_val = 0.0;
-        } else if (vv_cluster.active) {
-            uu_part.next_event_val = 0.0;
-            vv_part.next_event_val = cost;
-        } else {
-            uu_part.next_event_val = 0.0;
-            vv_part.next_event_val = 0.0;
-        }
-        */
 
 
         // current_time = 0, so the next event time for each edge is the
@@ -485,28 +469,12 @@ bool PCSTFast::run(std::vector<int>* result_nodes,
                         combCalculation(0,k,sourceId,sinkId,sourceNodeAttr, sinkNodeAttr,attribute_index, origin_edge_id, cost_min);
                     }
 
-                    /*
-                    std::vector<double> sourceNodeAttr = nodeAttrMap[edges[edge_part_index / 2].first.first];
-                    std::vector<double> sinkNodeAttr = nodeAttrMap[edges[edge_part_index / 2].first.second];
-                    //Get the attribute set for this edge
-                    std::vector<int> attribute_index_combination = edgeAttributeMap[edge_part_index / 2];
-                    //std::vector<Graph::AttributeInfo> attribute_stat = attribute_stat;
-                    */
-                    //int edge_id;
-                    //multi_edge_event.get_min(&val,&edge_id);
-                    /*
-                    if(edge_id != origin_edge_id ){
-                        printf("something is wrong \n");
-                        break;
-                    }
-                    */
                     edge_val = cost_min;
                     costs[edge_part_index / 2] = edge_val;
                     //printf("The edge id %d, with cost %f \n",edge_part_index / 2, costs[edge_part_index / 2]);
                     edge_compute_count = edge_compute_count+ 1;
                     //printf("edgeid is %d, weight is %f \n", edge_part_index / 2, val);
 
-                    //val = costs[edge_part_index / 2];
                 } else {
                     //PriorityQueueType multi_edge_event;
                     //printf("The origin edge id is %ld \n", edges[(edge_part_index-1) / 2].second);
@@ -522,26 +490,6 @@ bool PCSTFast::run(std::vector<int>* result_nodes,
                     for(int k=1; k<=attribute_index_number;++k){
                         combCalculation(0,k,sourceId,sinkId,sourceNodeAttr, sinkNodeAttr,attribute_index, origin_edge_id, cost_min);
                     }
-                    //int edge_id;
-                    //multi_edge_event.get_min(&val,&edge_id);
-                    /*
-                    if(edge_id != origin_edge_id ){
-                        printf("something is wrong \n");
-                        break;
-                    }
-                    */
-
-
-                    /*
-                    std::vector<double> sourceNodeAttr = nodeAttrMap[edges[(edge_part_index -1)/ 2].first.first];
-                    std::vector<double> sinkNodeAttr = nodeAttrMap[edges[(edge_part_index -1)/2].first.second];
-
-                    //Get the attribute set for this edge
-                    std::vector<int> attribute_index_combination = edgeAttributeMap[(edge_part_index-1) / 2];
-                    //std::vector<Graph::AttributeInfo> attribute_stat = attribute_stat;
-
-                    val = PCSTFast::computeEdgeWeight(sourceNodeAttr,sinkNodeAttr,attribute_stat,attribute_index_combination);
-                    */
                     edge_val = cost_min;
                     costs[(edge_part_index-1) / 2] = edge_val;
                     //printf("The edge id %d, with cost %f \n",(edge_part_index-1) / 2, costs[(edge_part_index-1) / 2]);
@@ -736,20 +684,6 @@ bool PCSTFast::run(std::vector<int>* result_nodes,
                 val = cost_min;
                 current_edge_cost = val;
 
-
-                /*
-                std::vector<double> sourceNodeAttr = nodeAttrMap[edges[next_edge_part_index/ 2].first.first];
-                std::vector<double> sinkNodeAttr = nodeAttrMap[edges[next_edge_part_index/2].first.second];
-                //std::vector<Graph::AttributeInfo> attribute_stat = attribute_stat;
-
-                std::vector<int> attribute_index_combination;
-                if (other_edge_part_index % 2 == 0){
-                    attribute_index_combination = edgeAttributeMap[other_edge_part_index / 2];
-                }else{
-                    attribute_index_combination = edgeAttributeMap[(other_edge_part_index-1) / 2];
-                }
-                */
-
                 //current_edge_cost = PCSTFast::computeEdgeWeight(sourceNodeAttr,sinkNodeAttr,attribute_stat,attribute_index_combination);
                 edge_compute_count = edge_compute_count+ 1;
                 costs[next_edge_part_index / 2] = current_edge_cost;
@@ -760,13 +694,6 @@ bool PCSTFast::run(std::vector<int>* result_nodes,
             } else{
                 current_edge_cost = costs[next_edge_part_index/2];
             }
-
-
-
-
-
-
-           // costs[next_edge_part_index / 2] = current_edge_cost;
 
             double sum_current_edge_part;
             int current_cluster_index;
@@ -790,123 +717,6 @@ bool PCSTFast::run(std::vector<int>* result_nodes,
             Cluster& other_cluster = clusters[other_cluster_index];
             EdgePart& next_edge_part = edge_parts[next_edge_part_index];
             EdgePart& other_edge_part = edge_parts[other_edge_part_index];
-
-            /*
-            std::vector<std::pair<double,int>> temp_pair;
-            clock_t  computeEdgeBeginTime, computeEdgeEndTime;
-
-            while (!other_cluster.edge_parts.is_empty()&&(other_cluster.edge_compute_flag==false)) {
-                double val;
-                int edge_part_index;
-                other_cluster.edge_parts.delete_min(&val, &edge_part_index);
-                EdgePart& ww_part = edge_parts[edge_part_index];
-                if(ww_part.edge_compute_flag==false){
-                    //Compute this edge_part's real value and update clusters[*it]
-                    if (edge_part_index % 2 == 0) {
-
-                        std::vector<double> sourceNodeAttr = nodeAttrMap[edges[edge_part_index / 2].first];
-                        std::vector<double> sinkNodeAttr = nodeAttrMap[edges[edge_part_index / 2].second];
-
-
-                        //Get the attribute set for this edge
-                        std::vector<int> attribute_index_combination = edgeAttributeMap[edge_part_index / 2];
-                        computeEdgeBeginTime = clock();
-                        val = PCSTFast::computeEdgeWeight(sourceNodeAttr,sinkNodeAttr,attribute_stat,attribute_index_combination);
-                        computeEdgeEndTime = clock();
-                        cout<<"Compute one edge costs : " <<(double)(computeEdgeEndTime - computeEdgeBeginTime) / CLOCKS_PER_SEC << "s" << endl;
-                        costs[edge_part_index / 2] = val;
-                        edge_compute_count = edge_compute_count+ 1;
-                        //printf("edgeid is %d, weight is %f \n", edge_part_index / 2, val);
-                    } else {
-                        std::vector<double> sourceNodeAttr = nodeAttrMap[edges[(edge_part_index-1)/ 2].first];
-                        std::vector<double> sinkNodeAttr = nodeAttrMap[edges[(edge_part_index -1)/2].second];
-
-                        //Get the attribute set for this edge
-                        std::vector<int> attribute_index_combination = edgeAttributeMap[(edge_part_index-1) / 2];
-                        val = PCSTFast::computeEdgeWeight(sourceNodeAttr,sinkNodeAttr,attribute_stat,attribute_index_combination);
-
-
-                        costs[(edge_part_index - 1) / 2] = val;
-                        edge_compute_count = edge_compute_count+ 1;
-                        //printf("edgeid is %d, weight is %f \n", (edge_part_index-1) / 2, val);
-
-                    }
-
-                }
-
-                temp_pair.push_back(std::make_pair(val, edge_part_index));
-            }
-            if(other_cluster.edge_parts.is_empty()&&(other_cluster.edge_compute_flag==false)){
-                std::vector<std::pair<double, int> >::iterator it_temp;
-                for (it_temp = temp_pair.begin(); it_temp != temp_pair.end(); it_temp++) {
-                    //std::cout<<"\n";
-                    double val= it_temp->first;
-                    int edge_part_index= it_temp->second;
-                    EdgePart& uu_part = edge_parts[edge_part_index];
-                    int the_other_edge_part_index = get_other_edge_part_index(
-                            edge_part_index);
-
-                    EdgePart& vv_part = edge_parts[the_other_edge_part_index];
-
-
-                    Cluster& uu_cluster = other_cluster;
-
-                    //calculate the current the_other_cluster_index
-                    int endpoint = edges[the_other_edge_part_index / 2].first;
-                    if (the_other_edge_part_index % 2 == 1) {
-                        endpoint = edges[the_other_edge_part_index / 2].second;
-                    }
-                    int the_other_cluster_index = endpoint;
-                    double total_sum = 0.0;
-                    path_compression_visited.resize(0);
-
-                    while (clusters[the_other_cluster_index].merged_into != -1) {
-                        path_compression_visited.push_back(make_pair(the_other_cluster_index,
-                                                                     total_sum));
-                        if (clusters[the_other_cluster_index].skip_up >= 0) {
-                            total_sum += clusters[the_other_cluster_index].skip_up_sum;
-                            the_other_cluster_index = clusters[the_other_cluster_index].skip_up;
-                        } else {
-                            total_sum += clusters[the_other_cluster_index].moat;
-                            the_other_cluster_index = clusters[the_other_cluster_index].merged_into;
-                        }
-                    }
-
-                    Cluster& vv_cluster = clusters[the_other_cluster_index];
-
-
-                    double event_time = val / 2.0;   //event_time equals cost/2
-                    if(uu_part.edge_compute_flag==false){
-                        uu_part.next_event_val = event_time;
-                    }
-                    if(vv_part.edge_compute_flag==false){
-                        vv_part.next_event_val = event_time;
-                    }
-
-                    uu_part.heap_node = uu_cluster.edge_parts.insert(
-                            uu_part.next_event_val, edge_part_index);
-
-                    if(vv_part.edge_compute_flag==false){
-                        vv_cluster.edge_parts.decrease_key(
-                                vv_part.heap_node,
-                                (std::numeric_limits<double>::max()/2.0),
-                                vv_part.next_event_val);//vv_part is the root as this next_event_val pairing heap
-                    }
-
-
-                    uu_part.edge_compute_flag = true;
-                    vv_part.edge_compute_flag = true;
-
-
-                }
-                other_cluster.edge_compute_flag = true;
-            }
-
-            //very strange here !!!!!!
-            //update other_edge_part edge_compute_flag
-            next_edge_part.edge_compute_flag = true;
-            other_edge_part.edge_compute_flag = true;
-            */
 
             //////////////////////////////////////////
             if (verbosity_level >= 2) {
@@ -985,23 +795,6 @@ bool PCSTFast::run(std::vector<int>* result_nodes,
                             //printf("The edge id %d, with cost %f \n",edge_part_index / 2, costs[edge_part_index / 2]);
                             edge_compute_count = edge_compute_count+ 1;
 
-
-
-                            /*
-                            std::vector<double> sourceNodeAttr = nodeAttrMap[edges[edge_part_index / 2].first.first];
-                            std::vector<double> sinkNodeAttr = nodeAttrMap[edges[edge_part_index / 2].first.second];
-
-
-                            //Get the attribute set for this edge
-                            std::vector<int> attribute_index_combination = edgeAttributeMap[edge_part_index / 2];
-                            //computeEdgeBeginTime = clock();
-                            val = PCSTFast::computeEdgeWeight(sourceNodeAttr,sinkNodeAttr,attribute_stat,attribute_index_combination);
-                            //computeEdgeEndTime = clock();
-                            //cout<<"Compute one edge costs : " <<(double)(computeEdgeEndTime - computeEdgeBeginTime) / CLOCKS_PER_SEC << "s" << endl;
-                            costs[edge_part_index / 2] = val;
-                            edge_compute_count = edge_compute_count+ 1;
-                            //printf("edgeid is %d, weight is %f \n", edge_part_index / 2, val);
-                            */
                         } else {
                             //PriorityQueueType multi_edge_event;
                             //printf("The origin edge id is %ld \n", edges[(edge_part_index-1) / 2].second);
@@ -1017,33 +810,11 @@ bool PCSTFast::run(std::vector<int>* result_nodes,
                             for(int k=1; k<=attribute_index_number;++k){
                                 combCalculation(0,k,sourceId,sinkId,sourceNodeAttr, sinkNodeAttr,attribute_index, origin_edge_id, cost_min);
                             }
-                            //int edge_id;
-                            //multi_edge_event.get_min(&val,&edge_id);
-                            /*
-                            if(edge_id != origin_edge_id ){
-                                printf("something is wrong \n");
-                                break;
-                            }
-                            */
 
                             edge_val =cost_min;
                             costs[(edge_part_index-1) / 2] = edge_val;
                             //printf("The edge id %d, with cost %f \n",(edge_part_index-1) / 2, costs[(edge_part_index-1) / 2]);
                             edge_compute_count = edge_compute_count+ 1;
-
-                            /*
-                            std::vector<double> sourceNodeAttr = nodeAttrMap[edges[(edge_part_index-1)/ 2].first.first];
-                            std::vector<double> sinkNodeAttr = nodeAttrMap[edges[(edge_part_index -1)/2].first.second];
-
-                            //Get the attribute set for this edge
-                            std::vector<int> attribute_index_combination = edgeAttributeMap[(edge_part_index-1) / 2];
-                            val = PCSTFast::computeEdgeWeight(sourceNodeAttr,sinkNodeAttr,attribute_stat,attribute_index_combination);
-
-
-                            costs[(edge_part_index - 1) / 2] = val;
-                            edge_compute_count = edge_compute_count+ 1;
-                            //printf("edgeid is %d, weight is %f \n", (edge_part_index-1) / 2, val);
-                            */
 
                         }
 
@@ -1116,7 +887,6 @@ bool PCSTFast::run(std::vector<int>* result_nodes,
                     }
                     other_cluster.edge_compute_flag = true;
                 }
-                //very strange here !!!!!!
                 //update other_edge_part edge_compute_flag
                 next_edge_part.edge_compute_flag = true;
                 other_edge_part.edge_compute_flag = true;
@@ -1256,18 +1026,6 @@ bool PCSTFast::run(std::vector<int>* result_nodes,
                         //printf("new cluster next_edge_event_update \n");
                         //printf("the added edge_part is %d \n",tmp_index);
                         //printf("the added value is %f \n",tmp_val);
-
-                        /*
-                        while(std::find(new_cluster.vertex_list.begin(), new_cluster.vertex_list.end(),endpoint)
-                                !=new_cluster.vertex_list.end()){
-                            printf("the added clusters_next_edge_event corresponds to node %d \n",endpoint);
-
-                            new_cluster.edge_parts.delete_min(&tmp_val,&tmp_index);
-                            if (!new_cluster.edge_parts.is_empty()) {
-                                new_cluster.edge_parts.get_min(&tmp_val, &tmp_index);
-                            }
-                        }
-                        */
 
                         clusters_next_edge_event.insert(tmp_val, new_cluster_index);
                     }
@@ -1849,25 +1607,7 @@ double PCSTFast::computeDis(double dou1, double dou2, double& doubleMax, double&
     return weight;
 }
 
-/*
-void PCSTFast::pretty_print(const vector<int>& v, const int sourceId, const int sinkId, std::vector<std::pair<std::pair<long, long>, long> >&edges,
-                         std::map<long,std::vector<int>> &edgeAttributeMap,long origin_edge_id
-) {
 
-    ///////////////
-    static int count = 0;
-    cout << "combination no " << (++count) << ": [ ";
-    for (int i = 0; i < v.size(); ++i) { cout << v[i] << " "; }
-    cout << "] " << endl;
-    /////////////
-
-    edges.push_back(std::make_pair(std::make_pair(sourceId, sinkId),origin_edge_id));
-    //printf("edge id is %d",edges.size()-1);
-    edgeAttributeMap.insert(
-            std::pair<long, std::vector<int>>(edges.size()-1, v));
-
-}
-*/
 void PCSTFast::pretty_print(const std::vector<int>& v, const int sourceId, const int sinkId,
                          std::vector<double>  sourceNode, std::vector<double>  sinkNode,
                          long origin_edge_id,
@@ -1897,22 +1637,6 @@ void PCSTFast::pretty_print(const std::vector<int>& v, const int sourceId, const
 
 
 }
-
-/*
-void PCSTFast::combCalculation(int offset, int k, const int sourceId, const int sinkId, std::vector<std::pair<std::pair<long, long>, long> > &edges,
-                            std::map<long,std::vector<int>> &edgeAttributeMap, long origin_edge_id
-) {
-    if (k == 0) {
-        pretty_print(attribute_index_combination, sourceId, sinkId,edges,edgeAttributeMap,origin_edge_id);
-        return;
-    }
-    for (int i = offset; i <= attribute_index.size() - k; ++i) {
-        attribute_index_combination.push_back(attribute_index[i]);
-        PCSTFast::combCalculation(i+1, k-1, sourceId, sinkId,edges,edgeAttributeMap, origin_edge_id);
-        attribute_index_combination.pop_back();
-    }
-}
-*/
 
 void PCSTFast::combCalculation(int offset, int k, const int sourceId, const int sinkId,
                             std::vector<double> sourceNode, std::vector<double> sinkNode,
