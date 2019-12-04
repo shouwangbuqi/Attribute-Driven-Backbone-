@@ -12,3 +12,16 @@ the required input files are:
 (2)An attribute file starting with each node id and its attributes
 (3)A penalty file starting with each node id and its penalty value in the graph
 (4)An ordered given node indexing, the algorithm will reindex the node id from 0
+
+
+Cite
+If you use this code in a scientific publication, we would appreciate citations to the following paper:
+
+@inproceedings{guan2019attribute,
+  title={Attribute-Driven Backbone Discovery},
+  author={Guan, Sheng and Ma, Hanchao and Wu, Yinghui},
+  booktitle={Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining},
+  pages={187--195},
+  year={2019},
+  organization={ACM}
+}
