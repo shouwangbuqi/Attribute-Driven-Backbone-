@@ -1,5 +1,5 @@
 ------------------------Final result-------------------------------------
-Total Running Time : 51.0516s
+Total Running Time : 50.6707s
 Total number of edge events:11572
 Edge Result:
 ----------------The total cost in the Tree ---------------------

@@ -1,0 +1,14 @@
+This piece of code is heavily modified from
+https://github.com/fraenkel-lab/pcst_fast
+We owe special thanks to the authors who make the above code available
+Please also consider citing authors' work as related work
+A Fast, Adaptive Variant of the Goemans-Williamson Scheme for the Prize-Collecting Steiner Tree Problem
+Chinmay Hegde, Piotr Indyk, Ludwig Schmidt Workshop of the 11th DIMACS Implementation Challenge: Steiner Tree Problems, 2014
+
+To run this code, 
+in main.cc 
+the required input files are:
+(1)A weighted(weight is not necessary) edgeList file
+(2)An attribute file starting with each node id and its attributes
+(3)A penalty file starting with each node id and its penalty value in the graph
+(4)An ordered given node indexing, the algorithm will reindex the node id from 0
